@@ -2,16 +2,16 @@ import numpy as np
 
 def initialize_population(
     population_size,
+    dimensions,
     lower_bound,
-    upper_bound,
-    rng
+    upper_bound
 ):
-
-    return rng.uniform(
+    population = np.random.uniform(
         lower_bound,
         upper_bound,
-        size = (population_size, len(lower_bound))
+        size=(population_size, dimensions)
     )
+    return population
 
 def split_population(population):
     midpoint = len(population) // 2
