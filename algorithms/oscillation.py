@@ -17,3 +17,11 @@ def food_equation_male(rand_male, ith_male):
 def food_equation_female(rand_female, ith_female):
     result  = math.exp(-rand_female / ith_female)
     return result
+
+def combat_equation_male(best_male, ith_male):
+    result  = math.exp(-best_male / ith_male)
+    return result
+
+def combat_equation_female(best_female, ith_female):
+    result  = math.exp(-best_female / ith_female)
+    return result

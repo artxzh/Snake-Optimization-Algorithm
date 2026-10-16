@@ -53,30 +53,30 @@ def random_exploration_update(lb, ub, males, females, c2, food_function_male, fo
 
     return new_population
 
-    def local_exploration_update(males, females, fitness_male, fitness_female, c3, temp):
-        new_males = males.copy()
-        new_females = females.copy()
+def local_exploration_update(males, females, fitness_male, fitness_female, c3, temp):
+    new_males = males.copy()
+    new_females = females.copy()
 
-        for i in range(len(males)):
-            best_male_index = np.argmin(fitness_male)
-            sing = random.choice([-1, 1])
-            r = np.random.uniform(0, 1, size=males.shape[1])
-            new_position = (
-                males[best_male_index]
-                + sing * c3 * temp * r * (males[best_male_index] - males[i])
-            )
+    for i in range(len(males)):
+        best_male_index = np.argmin(fitness_male)
+        sing = random.choice([-1, 1])
+        r = np.random.uniform(0, 1, size=males.shape[1])
+        new_position = (
+            males[best_male_index]
+            + sing * c3 * temp * r * (males[best_male_index] - males[i])
+        )
 
-            new_males[i] = clip_bounds(new_position, lb, ub)
+        new_males[i] = clip_bounds(new_position, lb, ub)
 
-        for i in range(len(females)):
-            best_female_index = np.argmin(fitness_female)
-            sing = random.choice([-1, 1])
-            r = np.random.uniform(0, 1, size=females.shape[1])
-            new_position = (
-                females[best_female_index]
-                + sing * c3 * temp * r * (females[best_female_index] - females[i])
-            )
+    for i in range(len(females)):
+        best_female_index = np.argmin(fitness_female)
+        sing = random.choice([-1, 1])
+        r = np.random.uniform(0, 1, size=females.shape[1])
+        new_position = (
+            females[best_female_index]
+            + sing * c3 * temp * r * (females[best_female_index] - females[i])
+        )
 
-            new_females[i] = clip_bounds(new_position, lb, ub)
+        new_females[i] = clip_bounds(new_position, lb, ub)
 
-        return np.concatenate((new_males, new_females), axis=0)
+    return np.concatenate((new_males, new_females), axis=0)
