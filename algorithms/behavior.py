@@ -53,35 +53,35 @@ def random_exploration_update(lb, ub, males, females, c2, food_function_male, fo
 
     return new_population
 
-def local_exploration_update(males, females, fitness_male, fitness_female, c3, temp):
+def local_exploration_update(population, males, females, fitness_male, fitness_female, lb, ub, c3, temp):
     new_males = males.copy()
     new_females = females.copy()
 
     for i in range(len(males)):
-        best_male_index = np.argmin(fitness_male)
+        best_individual = np.argmin(fitness_male + fitness_female)
         sing = random.choice([-1, 1])
         r = np.random.uniform(0, 1, size=males.shape[1])
         new_position = (
-            males[best_male_index]
-            + sing * c3 * temp * r * (males[best_male_index] - males[i])
+            males[best_individual]
+            + sing * c3 * temp * r * (males[best_individual] - males[i])
         )
 
         new_males[i] = clip_bounds(new_position, lb, ub)
 
     for i in range(len(females)):
-        best_female_index = np.argmin(fitness_female)
+        best_individual = np.argmin(fitness_male + fitness_female)
         sing = random.choice([-1, 1])
         r = np.random.uniform(0, 1, size=females.shape[1])
         new_position = (
-            females[best_female_index]
-            + sing * c3 * temp * r * (females[best_female_index] - females[i])
+            females[best_individual]
+            + sing * c3 * temp * r * (females[best_individual] - females[i])
         )
 
         new_females[i] = clip_bounds(new_position, lb, ub)
 
     return np.concatenate((new_males, new_females), axis=0)
 
-def combat_mode_update(males, females, fitness_male, fitness_female, c3, food_factor, combat_function_male, combat_function_female):
+def combat_mode_update(males, females, fitness_male, fitness_female, lb, ub, c3, food_factor, combat_function_male, combat_function_female):
     new_males = males.copy()
     new_females = females.copy()
 
@@ -107,7 +107,7 @@ def combat_mode_update(males, females, fitness_male, fitness_female, c3, food_fa
 
     return np.concatenate((new_males, new_females), axis=0)
 
-def chage_worsts_snakes(males, females, finess_male, fitness_female, lb, ub):
+def chage_worsts_snakes(males, females, fitness_male, fitness_female, lb, ub):
     worst_male_index = np.argmax(fitness_male)
     worst_female_index = np.argmax(fitness_female)
 
