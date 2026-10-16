@@ -81,7 +81,7 @@ def local_exploration_update(population, males, females, fitness_male, fitness_f
 
     return np.concatenate((new_males, new_females), axis=0)
 
-def combat_mode_update(males, females, fitness_male, fitness_female, lb, ub, c3, food_factor, combat_function_male, combat_function_female):
+def combat_update(males, females, fitness_male, fitness_female, lb, ub, c3, food_factor, combat_function_male, combat_function_female):
     new_males = males.copy()
     new_females = females.copy()
 
@@ -118,3 +118,27 @@ def chage_worsts_snakes(males, females, fitness_male, fitness_female, lb, ub):
     females[worst_female_index] = lb + r * (ub - lb)
 
     return males, females
+
+def reproduction_update(males, females, fitness_male, fitness_female, lb, ub, c3, food_factor, matching_function_male, matching_function_female):
+    new_males = males.copy()
+    new_females = females.copy()
+
+    for i in range(len(males)):
+        matching_factor = matching_function_male(fitness_female[i], fitness_male[i])
+        r = np.random.uniform(0, 1, size=males.shape[1])
+        new_position = (
+            males[i] + c3 * matching_factor * r * (food_factor * females[i] - males[i])
+        )
+
+        new_males[i] = clip_bounds(new_position, lb, ub)
+
+    for i in range(len(females)):
+        matching_factor = matching_function_female(fitness_male[i], fitness_female[i])
+        r = np.random.uniform(0, 1, size=females.shape[1])
+        new_position = (
+            females[i] + c3 * matching_factor * r * (food_factor * males[i] - females[i])
+        )
+
+        new_females[i] = clip_bounds(new_position, lb, ub)
+
+    return np.concatenate((new_males, new_females), axis=0)
