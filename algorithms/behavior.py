@@ -1,4 +1,7 @@
 import math
+import random
+import numpy as np
+from utils.bounds import clip_bounds
 
 def temp_update(cur_it, max_it):
     temp = math.exp(-cur_it / max_it)
@@ -8,3 +11,44 @@ def food_update(c1, cur_it, max_it):
     food = c1 * math.exp(cur_it - max_it / max_it)
     return food
 
+def random_exploration_update(lb, ub, males, females, c2, function_var_male, function_var_female, fitness_male, fitness_female):
+    new_males = males.copy()
+    new_females = females.copy()
+
+    for i in range(len(males)):
+        random_index = random.randint(0, len(males) - 1)
+
+        current_fitness = fitness_male[i]
+        random_fitness = fitness_male[random_index]
+
+        var = function_var_male(current_fitness, random_fitness)
+        r = np.random.uniform(0, 1, size=males.shape[1])
+        sign = random.choice([-1, 1])
+
+        new_position = (
+            males[random_index]
+            + sign * c2 * var * ((ub - lb) * r + lb)
+        )
+
+        new_males[i] = clip_bounds(new_position, lb, ub)
+
+    for i in range(len(females)):
+        random_index = random.randint(0, len(females) - 1)
+
+        current_fitness = fitness_female[i]
+        random_fitness = fitness_female[random_index]
+
+        var = function_var_female(current_fitness, random_fitness)
+        r = np.random.uniform(0, 1, size=females.shape[1])
+        sign = random.choice([-1, 1])
+
+        new_position = (
+            females[random_index]
+            + sign * c2 * var * ((ub - lb) * r + lb)
+        )
+
+        new_females[i] = clip_bounds(new_position, lb, ub)
+
+    new_population = np.concatenate((new_males, new_females), axis=0)
+
+    return new_population

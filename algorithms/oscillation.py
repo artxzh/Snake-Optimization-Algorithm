@@ -10,14 +10,10 @@ def oscillation_factor_c2(iteration, max_iterations):
         * np.cos(3 * 6 * progress * np.pi)
     )
 
-def oscillation_exploration_factor_male(rand_male, ith_male, evaluate):
-    fitness__random_male = evaluate(rand_male)
-    fitness_ith_male = evaluate(ith_male)
-    result  = math.exp(-fitness__random_male / fitness_ith_male)
+def food_equation_male(rand_male, ith_male):
+    result  = math.exp(-rand_male / ith_male)
     return result
 
-def oscillation_exploration_factor_female(rand_female, ith_female, evaluate):
-    fitness__random_female = evaluate(rand_female)
-    fitness_ith_female = evaluate(ith_female)
-    result  = math.exp(-fitness__random_female / fitness_ith_female)
+def food_equation_female(rand_female, ith_female):
+    result  = math.exp(-rand_female / ith_female)
     return result
