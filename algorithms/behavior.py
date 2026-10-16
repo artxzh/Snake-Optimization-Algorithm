@@ -106,3 +106,15 @@ def combat_mode_update(males, females, fitness_male, fitness_female, c3, food_fa
         new_females[i] = clip_bounds(new_position, lb, ub)
 
     return np.concatenate((new_males, new_females), axis=0)
+
+def chage_worsts_snakes(males, females, finess_male, fitness_female, lb, ub):
+    worst_male_index = np.argmax(fitness_male)
+    worst_female_index = np.argmax(fitness_female)
+
+    r = np.random.uniform(0, 1, size=males.shape[1])
+    males[worst_male_index] = lb + r * (ub - lb)
+   
+    r = np.random.uniform(0, 1, size=females.shape[1])
+    females[worst_female_index] = lb + r * (ub - lb)
+
+    return males, females
