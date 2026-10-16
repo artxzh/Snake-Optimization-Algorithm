@@ -25,3 +25,11 @@ def combat_equation_male(best_female, ith_male):
 def combat_equation_female(best_male, ith_male):
     result  = math.exp(-best_male / ith_male)
     return result
+
+def mating_equation_male(ith_female, ith_male):
+    result  = math.exp(-ith_female / ith_male)
+    return result
+
+def mating_equation_female(ith_male, ith_female):
+    result  = math.exp(-ith_male / ith_female)
+    return result
