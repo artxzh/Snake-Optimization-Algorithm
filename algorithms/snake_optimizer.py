@@ -1,7 +1,7 @@
-from population import *
-from fitness import *
-from behavior import *
-from oscillation import *
+from .population import *
+from .fitness import *
+from .behavior import *
+from .oscillation import *
 from problems.objective import sphere
 import math
 
@@ -21,7 +21,7 @@ def snake_optimizer(population_size, lower_bound, upper_bound, max_it, cur_it, d
     while cur_it < max_it:
         cur_it += 1
         male_fitness, female_fitness = evaluate_each_group(males, females, sphere)
-        
+
         temp = temp_update(cur_it, max_it)
         food = food_update(0.5, cur_it, max_it)
 
@@ -37,6 +37,7 @@ def snake_optimizer(population_size, lower_bound, upper_bound, max_it, cur_it, d
                 food_equation_female, 
                 male_fitness,
                 female_fitness)
+            
         else:
             if temp > 0.6:
                 #Exploração Local
@@ -45,6 +46,8 @@ def snake_optimizer(population_size, lower_bound, upper_bound, max_it, cur_it, d
                     females, 
                     male_fitness, 
                     female_fitness, 
+                    lower_bound,
+                    upper_bound,
                     c3, 
                     temp)
                 
@@ -52,11 +55,31 @@ def snake_optimizer(population_size, lower_bound, upper_bound, max_it, cur_it, d
                 random = np.random.uniform(0,1)
                 if(random < 0.5):
                     #Modo de Combate
-                    pass
+                    population = combat_update(
+                        males, 
+                        females, 
+                        male_fitness,
+                        female_fitness, 
+                        lower_bound, 
+                        upper_bound, 
+                        c3, 
+                        food, 
+                        combat_equation_male, 
+                        combat_equation_female)
                 else:
                     #Modo de Acasalamento
-                    pass
-        if cur_it > max_it:
-            break
-    
+                    population = reproduction_update(
+                        males, 
+                        females, 
+                        male_fitness,
+                        female_fitness, 
+                        lower_bound, 
+                        upper_bound, 
+                        c3, 
+                        food, 
+                        mating_equation_male, 
+                        mating_equation_female)
+                    
+            males, females = split_population(population)
 
+        return population

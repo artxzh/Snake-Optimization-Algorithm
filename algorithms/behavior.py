@@ -8,7 +8,7 @@ def temp_update(cur_it, max_it):
     return temp
 
 def food_update(c1, cur_it, max_it):
-    food = c1 * math.exp(cur_it - max_it / max_it)
+    food = c1 * math.exp((cur_it - max_it) / max_it)
     return food
 
 def random_exploration_update(lb, ub, males, females, c2, food_function_male, food_function_female, fitness_male, fitness_female):
@@ -53,7 +53,7 @@ def random_exploration_update(lb, ub, males, females, c2, food_function_male, fo
 
     return new_population
 
-def local_exploration_update(population, males, females, fitness_male, fitness_female, lb, ub, c3, temp):
+def local_exploration_update(males, females, fitness_male, fitness_female, lb, ub, c3, temp):
     new_males = males.copy()
     new_females = females.copy()
 
