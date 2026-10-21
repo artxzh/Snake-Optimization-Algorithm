@@ -5,11 +5,13 @@ from problems.objective import sphere
 
 if __name__ == "__main__":
     population_size = 50
-    lower_bound = -100
-    upper_bound = 100
-    max_it = 1000
+    dimensions = 5
+    max_it = 100
     cur_it = 0
-    dimensions = 30
+    cap = 1
+    lower_bound = np.full(dimensions, cap * -1)
+    upper_bound = np.full(dimensions, cap)
+
 
     resultado = snake_optimizer(
         population_size,
@@ -19,18 +21,13 @@ if __name__ == "__main__":
         cur_it,
         dimensions)
 
-    best_population, _, _ = resultado
+    best_population = resultado
+    for array in best_population:
+        print(array)
+    fitness = evaluate_group(best_population, sphere)
 
-    matriz = best_population[0]          # população final (50 x 30)
+    print(fitness)
+    best_fitness = np.min(fitness)
+    print(best_fitness)
     
-    fitness = evaluate_group(matriz, sphere)   # vetor (50,), um valor por indivíduo
-
-    idx_melhor = np.argmin(fitness)      # sphere é minimização
-    melhor_individuo = matriz[idx_melhor]
-    melhor_fitness = fitness[idx_melhor]
-     # Matriz completa (50 x 30) em texto
     np.savetxt("./results/resultado.txt", best_population, fmt="%.8f", delimiter=";")
-
-    print("Best Population:", best_population)
-    print("Melhor índice:", idx_melhor)
-    print("Melhor fitness:", melhor_fitness)

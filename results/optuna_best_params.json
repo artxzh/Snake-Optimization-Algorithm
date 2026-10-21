@@ -1,0 +1,14 @@
+{
+  "objective": "sphere",
+  "best_value": 1.1533096000825187e-10,
+  "best_parameters": {
+    "c1": 0.9828492497201118,
+    "c2": 0.012026445883850805,
+    "c3": 0.9984980632588737
+  },
+  "trials": 30,
+  "seed": 42,
+  "dimensions": 5,
+  "max_iterations": 100,
+  "population_size": 50
+}

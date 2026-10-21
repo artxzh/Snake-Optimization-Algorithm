@@ -5,11 +5,11 @@ from utils.bounds import clip_bounds
 
 def temp_update(cur_it, max_it):
     temp = math.exp(-cur_it / max_it)
-    return temp
+    return min(temp, 1)
 
 def food_update(c1, cur_it, max_it):
     food = c1 * math.exp((cur_it - max_it) / max_it)
-    return food
+    return min(food, 0.5)
 
 def random_exploration_update(lb, ub, males, females, c2, food_function_male, food_function_female, fitness_male, fitness_female):
     new_males = males.copy()
